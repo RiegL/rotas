@@ -47,7 +47,7 @@ createClient = (req, res) => {
 //atualiza o cliente pelo id
 function updateCliente(req, res) {
   const id = req.params.id;
-  let indice = 
+  let indice = findClienteIndex(id)
   clientes[indice] = req.body;
   res.status(200).send("Cliente atualizado com sucesso");
 };
