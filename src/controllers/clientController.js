@@ -12,16 +12,16 @@ const clientes = [
     nome: "Maria",
   },
   {
-    id:4,
+    id: 4,
     nome: "Ana",
   },
 ];
 
-getClients = (req, res) => {
+function getClients(req, res) {
   res.send(clientes);
 };
 
-getOneClient = (req, res) => {
+function getOneClient(req, res) {
   let id = req.params.id;
   const cliente = clientes.find((item) => item.id === Number(id));
   if (cliente) {
@@ -35,7 +35,7 @@ createClient = (req, res) => {
   const newClient = req.body;
   if (Object.keys(newClient).length > 0) {
     clientes.push(newClient);
-    res.sendStatus(201);
+    res.status(201).send("Cliente Criado");
   } else {
     res.status(406).send("nao adicionou");
   }
@@ -45,15 +45,25 @@ function updateCliente(req, res) {
   const id = req.params.id;
   let indice = findClienteIndex(id);
   clientes[indice] = req.body;
-  console.log("REQ ->",req.params)
-  console.log("REQ body ->",req.body)
-  res.status(200).send({ numero: indice, mensagem: "Cliente atualizado com sucesso" });
-}
-
+  res.status(200).send("Cliente atualizado com sucesso");
+};
 
 function findClienteIndex(id) {
-  const index = clientes.findIndex(item => item.id === Number(id));
+  const index = clientes.findIndex((item) => item.id === Number(id));
   return index;
-}
+};
 
-module.exports = { getClients, getOneClient, createClient,updateCliente };
+removeClient = (req, res) => {
+  const id = req.params.id;
+  let indice = findClienteIndex(id);
+  clientes.splice(indice,1)
+  res.status(200).send(`o Cliente do id ${id} foi removido!`)
+};
+
+module.exports = {
+  getClients,
+  updateCliente,
+  getOneClient,
+  createClient,
+  removeClient,
+};
